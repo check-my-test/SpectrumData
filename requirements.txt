@@ -1,3 +1,5 @@
-fastapi[all]
-bs4
-aiohttp
+fastapi[all]==0.101.1
+bs4==0.0.1
+aiohttp==3.8.5
+pymongo==4.5.0
+motor==3.2.0

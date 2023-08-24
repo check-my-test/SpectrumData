@@ -1,8 +1,12 @@
-import asyncio
-
 from fastapi import APIRouter
+from fastapi.encoders import jsonable_encoder
+from pymongo import ReplaceOne
+from starlette import status
+from starlette.responses import JSONResponse
 
-from parser.parser_logic import parser, intermediate, run_coros
+from database import htmls
+from parser.model import HTMLModel
+from parser.parser_logic import run_coros
 
 router = APIRouter(
     prefix="/parse",
@@ -15,6 +19,12 @@ async def do_parse(
         url: str = "https://jsonformatter.curiousconcept.com/",
         depth: int = 0,
         count_loaders: int = 1,
-) -> dict:
+) -> JSONResponse:
     items = await run_coros(url=url, depth=depth, count_loaders=count_loaders)
-    return {"message": f"Страницы успешно сохранены. Найдено страниц {len(items)}"}
+    requests = []
+    for url, item in items.items():
+        action = ReplaceOne({'url': url}, item, upsert=True)
+        requests.append(action)
+    await htmls.bulk_write(requests)
+    message = {"message": f"Сохранено/обновлено {len(items)} страниц"}
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=message)
