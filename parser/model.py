@@ -5,7 +5,7 @@ from database import PyObjectId
 
 
 class HTMLModel(BaseModel):
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    # id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     url: str = Field(...)
     title: str = Field(...)
     html: str = Field(...)

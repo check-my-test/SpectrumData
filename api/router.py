@@ -1,4 +1,6 @@
-from fastapi import APIRouter
+import re
+
+from fastapi import APIRouter, HTTPException
 
 from database import htmls
 from parser.model import HTMLModel
@@ -9,24 +11,31 @@ router = APIRouter(
 )
 
 
-@router.post("")
-async def find_htmls(url: str = None, title: str = None, merge: bool = True) -> list:
+@router.post("", response_model=list[HTMLModel])
+async def find_htmls(url: str = None, title: str = None, combine: bool = True) -> list[HTMLModel]:
+    if not url and not title:
+        return await htmls.find().to_list(length=100)
+    temp = {"url": url, "title": title}
+    subquery = {}
+    for field, data in temp.items():
+        if data is not None:
+            subquery[field] = {"$regex": re.compile(data, re.IGNORECASE)}
+    if len(subquery) == 1:
+        return await htmls.find(subquery).to_list(length=100)
+    else:
+        option = "$and" if combine else "$or"
+        total_query = {
+            option: [
+                {"url": subquery["url"]},
+                {"title": subquery["title"]},
+            ]
+        }
+        return await htmls.find(total_query).to_list(length=100)
 
 
-    return []
-
-
-@router.get("/find_one", response_model=HTMLModel)
-async def find_one(url: str) -> dict:
+@router.get("/get_html", response_model=HTMLModel)
+async def get_html(url: str) -> dict:
     result = await htmls.find_one({"url": url})
+    if result is None:
+        raise HTTPException(status_code=404, detail=f"Страница не найдена")
     return result
-
-
-# @app.get(
-#     "/{id}", response_description="Get a single student", response_model=StudentModel
-# )
-# async def show_student(id: str):
-#     if (student := await db["students"].find_one({"_id": id})) is not None:
-#         return student
-#
-#     raise HTTPException(status_code=404, detail=f"Student {id} not found")

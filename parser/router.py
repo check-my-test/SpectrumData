@@ -23,6 +23,7 @@ async def do_parse(
     items = await run_coros(url=url, depth=depth, count_loaders=count_loaders)
     requests = []
     for url, item in items.items():
+        # Добавление или обновление страницы. Я бы добавил опцию Update (bool), разрешающую обновлять или нет
         action = ReplaceOne({'url': url}, item, upsert=True)
         requests.append(action)
     await htmls.bulk_write(requests)
