@@ -8,6 +8,8 @@ services:
     volumes:
       - mongo:/data/db
       - ./mongo/create_index.js:/docker-entrypoint-initdb.d/create_index.js
+    logging:
+      driver: "none"
 
   web:
     build: .
