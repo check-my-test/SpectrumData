@@ -1,11 +1,9 @@
 from fastapi import APIRouter
-from fastapi.encoders import jsonable_encoder
 from pymongo import ReplaceOne
 from starlette import status
 from starlette.responses import JSONResponse
 
 from database import htmls
-from parser.model import HTMLModel
 from parser.parser_logic import run_coros
 
 router = APIRouter(

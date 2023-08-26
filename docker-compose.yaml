@@ -9,5 +9,15 @@ services:
       - mongo:/data/db
       - ./mongo/create_index.js:/docker-entrypoint-initdb.d/create_index.js
 
+  web:
+    build: .
+    container_name: app
+    ports:
+      - "8080:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      ENV_STATE: "dev"
+
 volumes:
   mongo:

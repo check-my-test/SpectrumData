@@ -1,28 +1,12 @@
-import pymongo
-from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
+from config.config import settings
 
-
-async_client = AsyncIOMotorClient("mongodb://localhost:27017/")
+async_client = AsyncIOMotorClient(settings.DATABASE_URL)
 db = async_client["parser_db"]
 htmls = db["htmls"]
 # Создал индекс по уникальному полю url
+# В рамках тестового без паролей
 
 async def close_db_connection():
     async_client.close()
 
-
-class PyObjectId(ObjectId):
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
-
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid objectid")
-        return ObjectId(v)
-
-    # @classmethod
-    # def __get_pydantic_json_schema__(cls, field_schema):
-    #     field_schema.update(type="string")
