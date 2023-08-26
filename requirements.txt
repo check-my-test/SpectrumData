@@ -1,5 +1,7 @@
-fastapi[all]==0.101.1
-bs4==0.0.1
 aiohttp==3.8.5
-pymongo==4.5.0
+bs4==0.0.1
+coverage==7.3.0
+fastapi[all]==0.101.1
+mongomock_motor==0.0.21
 motor==3.2.0
+pymongo==4.5.0
