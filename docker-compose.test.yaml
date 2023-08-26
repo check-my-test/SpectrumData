@@ -20,7 +20,7 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     env_file:
-      - .dev.env
+      - .test.env
 
 
 volumes:

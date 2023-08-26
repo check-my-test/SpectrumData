@@ -4,7 +4,7 @@ from urllib.parse import urljoin, urlparse
 import aiohttp
 from bs4 import BeautifulSoup
 
-from app import logger
+from config.logger import logger
 
 
 async def parser(items: dict, payload: dict) -> None | list:
