@@ -3,7 +3,7 @@ from parser.model import HTMLModel
 from fastapi import APIRouter, HTTPException
 
 from api.service import create_query
-from database import htmls
+from mongo.database import htmls
 
 router = APIRouter(
     prefix="/find",

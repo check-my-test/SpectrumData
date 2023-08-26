@@ -5,7 +5,7 @@ from pymongo import ReplaceOne
 from starlette import status
 from starlette.responses import JSONResponse
 
-from database import htmls
+from mongo.database import htmls
 
 router = APIRouter(
     prefix="/parse",
