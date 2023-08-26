@@ -1,0 +1,63 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-ast
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-docstring-first
+      - id: check-byte-order-marker
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-toml
+      - id: debug-statements
+      - id: detect-private-key
+      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+
+  - repo: https://github.com/psf/black # Временно исключён.
+    rev: 23.1.0
+    hooks:
+      - id: black
+        args: [--line-length=119]
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        args: [--profile, black, --line-length=119]
+
+  - repo: https://github.com/PyCQA/flake8 # Временно исключён
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        additional_dependencies:
+          [
+            "flake8-bugbear==23.3.23",
+            "flake8-comprehensions==3.11.1",
+            "flake8-debugger==4.1.2",
+            "flake8-deprecated==2.0.1",
+            "flake8-async==22.11.14",
+            "flake8-pep3101==2.0.0",
+            "flake8-print==5.0.0",
+            "flake8-string-format==0.3.0",
+          ]
+        args: [--exit-zero, --verbose]
+
+  - repo: local # https://github.com/pre-commit/mirrors-mypy/blob/main/.pre-commit-hooks.yaml
+    hooks:
+      - id: mypy
+        name: mypy
+        description: ""
+        entry: mypy
+        language: python
+        "types_or": [python, pyi]
+        args: ["--ignore-missing-imports"]
+        require_serial: true
+        additional_dependencies: []
+        minimum_pre_commit_version: "2.9.2"

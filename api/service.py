@@ -5,7 +5,7 @@ async def create_query(url: str, title: str, combine: bool = True) -> dict:
     temp = {"url": url, "title": title}
     subquery = {}
     for field, data in temp.items():
-        if data is not None:
+        if not data:
             subquery[field] = {"$regex": re.compile(data, re.IGNORECASE)}
     if len(subquery) == 1:
         return subquery
