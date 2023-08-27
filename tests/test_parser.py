@@ -7,7 +7,7 @@ from starlette.testclient import TestClient
 
 from app import app
 from config.config import settings
-from database import db
+from mongo.database import db
 from tests.mock_data import FIRST_DOCUMENT
 from tests.mock_functions import mock_parser
 
