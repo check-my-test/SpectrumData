@@ -8,20 +8,20 @@ services:
       - "27017:27017"
     volumes:
       - mongo:/data/db
-      - ./mongo/create_index.js:/docker-entrypoint-initdb.d/create_index.js
     logging:
       driver: none
 
   web:
     build: .
     container_name: app
-    command: python main.py
+    command: python main_test.py
     ports:
       - "8080:8080"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     env_file:
-      - .dev.env
+      - .test.env
+
 
 volumes:
   mongo:
